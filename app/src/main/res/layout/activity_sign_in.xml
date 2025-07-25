@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/signinLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".SignInActivity">
 
     <TextView
         android:id="@+id/signinTitle"
@@ -59,16 +60,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebookLoginButton"
+    <!-- NEW BUTTON: Create Account -->
+    <Button
+        android:id="@+id/createAccountButton"
         android:layout_width="196dp"
         android:layout_height="49dp"
         android:layout_marginTop="24dp"
-        android:backgroundTint="#4267B2"
-        android:text="Continue with Facebook"
+        android:backgroundTint="#008000"
+        android:text="Create Account"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/signinButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- NEW BUTTON: Sign Up with Facebook -->
+    <Button
+        android:id="@+id/facebookSignUpButton"
+        android:layout_width="196dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#4267B2"
+        android:text="Sign Up with Facebook"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/createAccountButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

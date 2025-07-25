@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.*
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.lawal.myapplication.databinding.ActivitySignInBinding
-import org.json.JSONException
 
 class SignInActivity : AppCompatActivity() {
 
@@ -16,54 +16,46 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Facebook SDK Initialization
-        FacebookSdk.sdkInitialize(applicationContext)
-        callbackManager = CallbackManager.Factory.create()
-
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Email/Password Sign In Button
+        callbackManager = CallbackManager.Factory.create()
+
+        // Manual Sign In button
         binding.signinButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter both fields", Toast.LENGTH_SHORT).show()
+
+            if (username == "admin" && password == "1234") {
+                startActivity(Intent(this, WelcomeActivity::class.java))
             } else {
-                // Handle email/password login here
-                Toast.makeText(this, "Signed in as $username", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Username or password is incorrect. Try again.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Facebook Sign In Button
-        binding.facebookLoginButton.setPermissions("email", "public_profile")
-        binding.facebookLoginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(result: LoginResult) {
-                val request = GraphRequest.newMeRequest(result.accessToken) { obj, _ ->
-                    try {
-                        val name = obj?.getString("name")
-                        Toast.makeText(this@SignInActivity, "Facebook user: $name", Toast.LENGTH_SHORT).show()
-                    } catch (e: JSONException) {
-                        Toast.makeText(this@SignInActivity, "Error parsing user data", Toast.LENGTH_SHORT).show()
-                    }
+        // Create Account button
+        binding.createAccountButton.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
+
+        // Facebook Login button
+        binding.facebookSignUpButton.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email", "public_profile"))
+            LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    startActivity(Intent(this@SignInActivity, WelcomeActivity::class.java))
+                    finish()
                 }
-                val parameters = Bundle()
-                parameters.putString("fields", "id,name,email")
-                request.parameters = parameters
-                request.executeAsync()
-            }
+                override fun onCancel() {
+                    Toast.makeText(this@SignInActivity, "Facebook login cancelled.", Toast.LENGTH_SHORT).show()
+                }
+                override fun onError(error: FacebookException) {
+                    Toast.makeText(this@SignInActivity, "Facebook login failed: ${error.message}", Toast.LENGTH_LONG).show()
+                }
+            })
+        }
 
-            override fun onCancel() {
-                Toast.makeText(this@SignInActivity, "Facebook sign-in cancelled", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onError(error: FacebookException) {
-                Toast.makeText(this@SignInActivity, "Facebook error: ${error.message}", Toast.LENGTH_LONG).show()
-            }
-        })
-
-        // Back Button
+        // Back button
         binding.backButton.setOnClickListener {
             finish()
         }
