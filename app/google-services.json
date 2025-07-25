@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "396439256020",
+    "project_id": "fluentbk-3d468",
+    "storage_bucket": "fluentbk-3d468.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396439256020:android:9d6542b80115e7075f3441",
+        "android_client_info": {
+          "package_name": "com.lawal.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmGLk86jIv4XPZl5MdCfOc4Dy-2sNcv84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
